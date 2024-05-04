@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS GoNews (
+    id BIGSERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    pub_date TIMESTAMPTZ NOT NULL DEFAULT now(),
+    link TEXT NOT NULL UNIQUE
+);
