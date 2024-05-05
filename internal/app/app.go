@@ -41,9 +41,9 @@ func (a *App) RunApp() error {
 	}
 
 	repo := repository.NewRepository(db)
-	svc := service.NewService(repo)
-	handlers := handlers.NewHandlers(svc)
 	rss := rss.NewRss(cfg)
+	svc := service.NewService(repo, rss)
+	handlers := handlers.NewHandlers(svc)
 	srv := server.NewServer(cfg)
 	router := server.NewRouter(handlers)
 
@@ -57,7 +57,7 @@ func (a *App) RunApp() error {
 	errs := make(chan error)
 
 	for _, url := range cfg.Urls {
-		go rss.RssPost.ParseURL(url, posts, errs)
+		go svc.RssService.ParseURL(url, posts, errs)
 	}
 
 	go func() {
